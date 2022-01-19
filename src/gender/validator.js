@@ -19,7 +19,7 @@ const create = (req, res, next) => {
   next();
 };
 
-const remove = (req, res, next) => {
+const isValidId = (req, res, next) => {
   const { id } = req.params;
 
   if (!id || !util.isValidMongoId(id) || !service.isValidGender(id)) {
@@ -28,18 +28,7 @@ const remove = (req, res, next) => {
   next();
 };
 
-const update = async (req, res, next) => {
-  const { id } = req.params;
-
-  if (!id || !util.isValidMongoId(id) || !(await service.isValidGender(id))) {
-    return res.status(400).json({ message: 'Invalid Id' });
-  }
-
-  next();
-};
-
 validator.create = create;
-validator.remove = remove;
-validator.update = update;
+validator.isValidId = isValidId;
 
 module.exports = validator;

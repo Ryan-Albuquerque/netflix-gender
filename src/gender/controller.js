@@ -42,9 +42,21 @@ const update = async (req, res, next) => {
   }
 };
 
+const getOne = async (req,res,next) => {
+  try {
+    const { id } = req.params;
+    const gender = await service.findGender(id);
+    return res.status(200).json({ gender });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 controller.list = list;
 controller.create = create;
 controller.remove = remove;
 controller.update = update;
+controller.getOne = getOne;
 
 module.exports = controller;

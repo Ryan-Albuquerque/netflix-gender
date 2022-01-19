@@ -20,6 +20,11 @@ const updateGender = async (id, genderUpdate) => {
   });
   return updated;
 };
+const findGender = async (id) => {
+  const finded = await model.findById(id);
+  return finded;
+};
+
 const isValidGender = async (id) => {
   const gender = await model.findById(id);
   return Boolean(gender);
@@ -30,5 +35,6 @@ service.createGender = createGender;
 service.removeGender = removeGender;
 service.updateGender = updateGender;
 service.isValidGender = isValidGender;
+service.findGender = findGender;
 
 module.exports = service;
