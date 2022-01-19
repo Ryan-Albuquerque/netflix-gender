@@ -4,8 +4,8 @@ const controller = {};
 
 const list = async (req, res, next) => {
   try {
-    const requests = await service.listGenders();
-    return res.json({ requests });
+    const genders = await service.listGenders();
+    return res.json({ genders });
   } catch (error) {
     next(error);
   }
@@ -13,8 +13,8 @@ const list = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
-    const request = req.body;
-    const created = await service.createGender(request);
+    const gender = req.body;
+    const created = await service.createGender(gender);
     return res.status(201).json({ created });
   } catch (error) {
     next(error);
@@ -34,15 +34,15 @@ const remove = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const requestBody = req.body;
-    const updated = await service.updateGender(id, requestBody);
+    const genderBody = req.body;
+    const updated = await service.updateGender(id, genderBody);
     return res.status(200).json({ updated });
   } catch (error) {
     next(error);
   }
 };
 
-const getOne = async (req,res,next) => {
+const getOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const gender = await service.findGender(id);
@@ -51,7 +51,6 @@ const getOne = async (req,res,next) => {
     next(error);
   }
 };
-
 
 controller.list = list;
 controller.create = create;
