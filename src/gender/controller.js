@@ -1,34 +1,50 @@
-const model = require('./model');
+const service = require('./service');
 
-const service = {};
+const controller = {};
 
-const listGenders = async () => {
-  const result = await model.find({});
-  return result;
-};
-const createGender = async (gender) => {
-  const created = await model.create(gender);
-  return created;
-};
-const removeGender = async (genderId) => {
-  const removed = await model.findOneAndDelete(genderId);
-  return removed;
-};
-const updateGender = async (id, genderUpdate) => {
-  const updated = await model.findByIdAndUpdate(id, genderUpdate, {
-    new: true,
-  });
-  return updated;
-};
-const isValidGender = async (id) => {
-  const gender = await model.findById(id);
-  return Boolean(gender);
+const list = async (req, res, next) => {
+  try {
+    const requests = await service.listGenders();
+    return res.json({ requests });
+  } catch (error) {
+    next(error);
+  }
 };
 
-service.listGenders = listGenders;
-service.createGender = createGender;
-service.removeGender = removeGender;
-service.updateGender = updateGender;
-service.isValidGender = isValidGender;
+const create = async (req, res, next) => {
+  try {
+    const request = req.body;
+    const created = await service.createGender(request);
+    return res.status(201).json({ created });
+  } catch (error) {
+    next(error);
+  }
+};
 
-module.exports = service;
+const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const removed = await service.removeGender(id);
+    return res.status(202).json({ removed });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const requestBody = req.body;
+    const updated = await service.updateGender(id, requestBody);
+    return res.status(200).json({ updated });
+  } catch (error) {
+    next(error);
+  }
+};
+
+controller.list = list;
+controller.create = create;
+controller.remove = remove;
+controller.update = update;
+
+module.exports = controller;
